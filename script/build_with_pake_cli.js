@@ -7,7 +7,7 @@ const { exec, cd, mv } = shelljs;
 console.log('Welcome to use pake-cli to build app');
 console.log('Node.js info in your localhost ', process.version);
 console.log('\n=======================\n');
-console.log('Pake parameters is: ');
+console.log('Pake parameters are: ');
 console.log('url: ', process.env.URL);
 console.log('name: ', process.env.NAME);
 console.log('icon: ', process.env.ICON);
@@ -19,11 +19,25 @@ console.log('is multi arch? only for Mac: ', process.env.MULTI_ARCH);
 console.log('targets type? only for Linux: ', process.env.TARGETS);
 console.log('===========================\n');
 
-cd('node_modules/pake-cli');
-let params = `node cli.js ${process.env.URL} --name ${process.env.NAME} --height ${process.env.HEIGHT} --width ${process.env.WIDTH}`;
+// 处理 dimensions 和 optional_configurations
+const dimensions = process.env.DIMENSIONS || '1200,780';  // 默认值
+const [width, height] = dimensions.split(',');
 
-if (process.env.USER_AGENT) {
-  params = `${params} --user-agent "${process.env.USER_AGENT}"`;
+const optionalConfig = process.env.OPTIONAL_CONFIGURATIONS || '';  // 获取合并的 user-agent 和 icon
+let userAgent = '';
+let icon = '';
+
+if (optionalConfig) {
+  const [userAgentValue, iconValue] = optionalConfig.split(',');
+  userAgent = userAgentValue || '';
+  icon = iconValue || '';
+}
+
+cd('node_modules/pake-cli');
+let params = `node cli.js ${process.env.URL} --name ${process.env.NAME} --height ${height} --width ${width}`;
+
+if (userAgent) {
+  params = `${params} --user-agent "${userAgent}"`;
 }
 
 if (process.env.HIDE_TITLE_BAR === 'true') {
@@ -58,7 +72,7 @@ const downloadIcon = async iconFile => {
 };
 
 const main = async () => {
-  if (process.env.ICON && process.env.ICON !== '') {
+  if (icon) {
     let iconFile;
     switch (process.platform) {
       case 'linux':
@@ -80,16 +94,4 @@ const main = async () => {
     console.log("Won't download the icon as ICON environment variable is not defined!");
   }
 
-  console.log('Pake parameters is: ', params);
-  console.log('Compile....');
-  exec(params);
-
-  if (!fs.existsSync('output')) {
-    fs.mkdirSync('output');
-  }
-  mv(`${process.env.NAME}.*`, 'output/');
-  console.log('Build Success');
-  cd('../..');
-};
-
-main();
+  console.log('Pake parameters are
