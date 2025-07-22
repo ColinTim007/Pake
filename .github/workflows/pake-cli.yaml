@@ -23,14 +23,10 @@ on:
       icon:
         description: 'Icon, Image URL, Optional'
         required: false
-      width:
-        description: 'Width, Optional'
+      dimensions:
+        description: 'Width, Height (separated by comma)'
         required: false
-        default: '1200'
-      height:
-        description: 'Height, Optional'
-        required: false
-        default: '780'
+        default: '1200,780'
       fullscreen:
         description: 'Fullscreen, At startup, Optional'
         required: false
