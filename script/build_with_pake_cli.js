@@ -22,6 +22,10 @@ console.log('===========================\n');
 cd('node_modules/pake-cli');
 let params = `node cli.js ${process.env.URL} --name ${process.env.NAME} --height ${process.env.HEIGHT} --width ${process.env.WIDTH}`;
 
+if (process.env.USER_AGENT) {
+  params = `${params} --user-agent "${process.env.USER_AGENT}"`;
+}
+
 if (process.env.HIDE_TITLE_BAR === 'true') {
   params = `${params} --hide-title-bar`;
 }
