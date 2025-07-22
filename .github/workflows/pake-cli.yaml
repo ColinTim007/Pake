@@ -17,6 +17,9 @@ on:
       name:
         description: 'Name, English, Linux no capital'
         required: true
+      user_agent:
+        description: 'Custom User-Agent'
+        required: false
       icon:
         description: 'Icon, Image URL, Optional'
         required: false
@@ -126,6 +129,7 @@ jobs:
         env:
           URL: ${{ inputs.url }}
           NAME: ${{ inputs.name }}
+          USER_AGENT: ${{ inputs.user_agent }}
           ICON: ${{ inputs.icon }}
           HEIGHT: ${{ inputs.height }}
           WIDTH: ${{ inputs.width }}
