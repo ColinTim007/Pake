@@ -17,14 +17,11 @@ on:
       name:
         description: 'Name, English, Linux no capital'
         required: true
-      user_agent:
-        description: 'Custom User-Agent'
-        required: false
-      icon:
-        description: 'Icon, Image URL, Optional'
+      optional_configurations:
+        description: 'User-Agent and Icon (separated by comma, e.g. "User-Agent-Value,Icon-URL")'
         required: false
       dimensions:
-        description: 'Width, Height (separated by comma)'
+        description: 'Width, Height (separated by comma, e.g. "1200,780")'
         required: false
         default: '1200,780'
       fullscreen:
@@ -125,7 +122,6 @@ jobs:
         env:
           URL: ${{ inputs.url }}
           NAME: ${{ inputs.name }}
-          USER_AGENT: ${{ inputs.user_agent }}
           ICON: ${{ inputs.icon }}
           HEIGHT: ${{ inputs.height }}
           WIDTH: ${{ inputs.width }}
@@ -133,6 +129,8 @@ jobs:
           FULLSCREEN: ${{ inputs.fullscreen }}
           MULTI_ARCH: ${{ inputs.multi_arch }}
           TARGETS: ${{ inputs.targets }}
+          OPTIONAL_CONFIGURATIONS: ${{ inputs.optional_configurations }}
+          DIMENSIONS: ${{ inputs.dimensions }}
           PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig
           PKG_CONFIG_ALLOW_SYSTEM_LIBS: 1
           PKG_CONFIG_ALLOW_SYSTEM_CFLAGS: 1
@@ -155,3 +153,4 @@ jobs:
             ~/.cargo/git/db/
             node_modules/pake-cli/src-tauri/target/
           key: ${{ inputs.platform }}-cargo-${{ hashFiles('node_modules/pake-cli/src-tauri/Cargo.lock') }}
+
